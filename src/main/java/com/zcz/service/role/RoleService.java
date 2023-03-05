@@ -2,16 +2,20 @@ package com.zcz.service.role;
 
 import com.zcz.entity.Role;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * @description: 角色业务层
- * @fileName: RoleService
- * @author: ZCZ
- * @date 2023年03月02日 22:50
+ * @Description: 角色业务层
+ * @ClassName: RoleService
+ * @Author: ZCZ
+ * @Date 2023年03月02日 22:50
  */
 public interface RoleService {
-    //获取角色列表
+    /**
+     * @Description: 获取角色列表
+     * @Date: 2023/3/5
+     * @Param: []
+     * @return: java.util.List<com.zcz.entity.Role>
+     **/
     public List<Role> getRoleList();
 }

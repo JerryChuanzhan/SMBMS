@@ -9,20 +9,51 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 /**
- * @description: 用户实现类
- * @fileName: UserImpl
- * @author: ZCZ
- * @date 2023年02月26日 17:10
+ * @Description: 用户实现类
+ * @FileName: UserImpl
+ * @Author: ZCZ
+ * @Date 2023年02月26日 17:10
  */
 public class UserDaoImpl implements UserDao {
-    //得到要登录的用户
+
+    /**
+     * @Description: 根据用户编码据获取用户
+     * @Date: 2023/3/5
+     * @Param: [connection, usercode]
+     * @return: com.zcz.entity.User
+     **/
     @Override
-    public User getLoginUser(Connection connection, String usercode,String userPassword) throws SQLException {
+    public User getUserByUserCode(Connection connection, String usercode) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = null;
+        if (connection != null) {
+            String sql = "select  * from smbms_user where userCode = ?";
+            Object[] params = {usercode};
+            resultSet = BaseDao.execute(connection, preparedStatement, sql, params, null);
+            if (resultSet.next()) {
+                user.setUserRole(resultSet.getInt("usercode"));
+                user.setUserRoleName(resultSet.getString("userName"));
+                user.setPhone(resultSet.getString("phone"));
+                user.setAddress(resultSet.getString("address"));
+            }
+        }
+        BaseDao.closeResource(connection, preparedStatement, resultSet);
+        return null;
+    }
+
+    /**
+     * @Description: 得到要登录的用户
+     * @Date: 2023/3/5
+     * @Param: [connection, usercode, userPassword]
+     * @return: com.zcz.entity.User
+     **/
+    @Override
+    public User getLoginUser(Connection connection, String usercode, String userPassword) throws SQLException {
         //准备公共数据库方法连接参数
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -33,7 +64,7 @@ public class UserDaoImpl implements UserDao {
             //编写查询 SQL
             String sql = "select  * from smbms_user where userCode = ? and userPassword = ?";
             //设置查询变量参数
-            Object[] params = {usercode,userPassword};
+            Object[] params = {usercode, userPassword};
             //调用数据公共方法执行查询
             resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
             //遍历查询结果对象，将值赋给 User
@@ -60,7 +91,12 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    //修改当前用户密码
+    /**
+     * @Description: 修改当前用户密码
+     * @Date: 2023/3/5
+     * @Param: [connection, id, password]
+     * @return: int
+     **/
     @Override
     public int updatePwd(Connection connection, int id, String password) throws SQLException {
         PreparedStatement preparedStatement = null;
@@ -75,7 +111,12 @@ public class UserDaoImpl implements UserDao {
         return executeRows;
     }
 
-    //根据用户名或者角色 获取用户列表数量【最难理解的SQL】
+    /**
+     * @Description: 根据用户名或者角色 获取用户列表数量【最难理解的SQL】
+     * @Date: 2023/3/5
+     * @Param: [connection, userRole, userName]
+     * @return: int
+     **/
     @Override
     public int getUserCount(Connection connection, int userRole, String userName) throws SQLException {
         PreparedStatement preparedStatement = null;
@@ -113,7 +154,12 @@ public class UserDaoImpl implements UserDao {
         return counts;
     }
 
-    // 获取用户列表
+    /**
+     * @Description: 获取用户列表
+     * @Date: 2023/3/5
+     * @Param: [connection, userRole, userName, pageSize, currentPageNo]
+     * @return: java.util.List<com.zcz.entity.User>
+     **/
     @Override
     public List<User> getUserList(Connection connection, int userRole, String userName, int pageSize, int currentPageNo) throws SQLException {
         PreparedStatement preparedStatement = null;
@@ -163,16 +209,21 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
 
-    //添加用户信息
+    /**
+     * @Description: 添加用户信息
+     * @Date: 2023/3/5
+     * @Param: [connection, userCode, userName, gender, birthday, phone, createdBy, creationDate]
+     * @return: int
+     **/
     @Override
-    public int addUser(Connection connection, int userRole, String userName, int gender, Date birthday, String phone, int createdBy, Date creationDate) throws SQLException {
-        PreparedStatement preparedStatement=null;
-        int addRows =0;
-        if (connection!=null){
-            String sql = "inset into smbms_user (userRole,userName,gender,birthday,phone,createdBy,creationDate) values (?,? ? ,? ,? ,? ,? )";
-            Object[] params = {userRole,userName,gender,birthday,phone,createdBy,creationDate};
-            int execute = BaseDao.execute(connection, preparedStatement, sql, params);
-            BaseDao.closeResource(connection,null,null);
+    public int addUser(Connection connection, int userCode, String userName, int gender, String birthday, String phone, int createdBy, String creationDate) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        int addRows = 0;
+        if (connection != null) {
+            String sql = "insert into smbms_user (userCode,userName,gender,birthday,phone,createdBy,creationDate) values (?,? ,? ,? ,? ,? ,? )";
+            Object[] params = {userCode, userName, gender, birthday, phone, createdBy, creationDate};
+            addRows = BaseDao.execute(connection, preparedStatement, sql, params);
+            BaseDao.closeResource(null, null, null);
         }
         return addRows;
     }

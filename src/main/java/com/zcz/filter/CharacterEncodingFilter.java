@@ -4,16 +4,22 @@ import javax.servlet.*;
 import java.io.IOException;
 
 /**
- * @description: 字节编码过滤器
- * @fileName: CharacterEncodingFilter
- * @author: ZCZ
- * @date 2023年02月26日 16:42
+ * @Description: 字节编码过滤器
+ * @ClassName: CharacterEncodingFilter
+ * @Author: ZCZ
+ * @Date 2023年02月26日 16:42
  */
 public class CharacterEncodingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * @Description :  过滤处理请求编码
+     * @Date : 18:39 2023/3/5
+     * @Param : [request, response, chain]
+     * @return : void
+     **/
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         //设置请求、相应编码

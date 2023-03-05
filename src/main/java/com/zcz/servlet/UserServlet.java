@@ -9,6 +9,7 @@ import com.zcz.service.user.UserService;
 import com.zcz.service.user.serviceImpl.UserServiceImpl;
 import com.zcz.util.Constants;
 import com.zcz.util.PageSupport;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,13 +24,19 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @description: 用户信息操作Servlet
- * @fileName: UserServlet
- * @author: ZCZ
- * @date 2023年02月26日 22:36
+ * @Description: 用户信息操作Servlet
+ * @FileName: UserServlet
+ * @Author: ZCZ
+ * @Date 2023年02月26日 22:36
  */
 //实现Servlet复用
 public class UserServlet extends HttpServlet {
+    /**
+     * @return void
+     * @Description //TODO Servlet复用
+     * @Date 18:22 2023/3/5
+     * @Param [req, resp]
+     **/
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getParameter("method");
@@ -42,6 +49,10 @@ public class UserServlet extends HttpServlet {
             this.query(req, resp);
         } else if (method != null && method.equals("add")) {
             this.addUser(req, resp);
+        } else if (method != null && method.equals("getrolelist")) {
+            this.getroleList(req, resp);
+        } else if (method != null && method.equals("ucexist")) {
+            this.isExitUser(req, resp);
         }
     }
 
@@ -50,7 +61,13 @@ public class UserServlet extends HttpServlet {
         doGet(req, resp);
     }
 
-    //封装servlet的修改密码方法
+
+    /**
+     * @return void
+     * @Description //TODO 封装servlet的修改密码方法
+     * @Date 18:23 2023/3/5
+     * @Param [req, resp]
+     **/
     public void updatePwd(HttpServletRequest req, HttpServletResponse resp) {
         //从Session中获取用户ID
         Object o = req.getSession().getAttribute(Constants.USER_SESSION);
@@ -83,7 +100,12 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    //验证旧密码，Session中有用户的密码   根据Js中ajax逻辑进行判断
+    /**
+     * @return void
+     * @Description //TODO 验证旧密码，Session中有用户的密码   根据Js中ajax逻辑进行判断
+     * @Date 18:23 2023/3/5
+     * @Param [req, resp]
+     **/
     public void testOldPwd(HttpServletRequest req, HttpServletResponse resp) {
         //从Session中获取用户ID
         Object o = req.getSession().getAttribute(Constants.USER_SESSION);
@@ -122,7 +144,12 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    //用户管理实现   重点难点
+    /**
+     * @return void
+     * @Description //TODO 用户管理实现   重点难点
+     * @Date 18:23 2023/3/5
+     * @Param [req, resp]
+     **/
     public void query(HttpServletRequest req, HttpServletResponse resp) {
         //从前端获取数据
         String queryUserName = req.getParameter("queryname");
@@ -192,34 +219,89 @@ public class UserServlet extends HttpServlet {
         }
 
     }
-        //用户管理实现   重点难点
-        public void addUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            //从前端获取数据
-            String userCode = req.getParameter("userCode");
-            String userName = req.getParameter("userName");//临时
-            String userPassword = req.getParameter("userPassword");
-            String ruserPassword = req.getParameter("ruserPassword");
-            String gender = req.getParameter("gender");
-            String birthday = req.getParameter("birthday");
-            String phone = req.getParameter("phone");
-            String address = req.getParameter("address");
-            String userRole = req.getParameter("userRole");
-            int createdBy=0;
-            Date date = new Date();
-            boolean flag =false;
-            UserServiceImpl userService = new UserServiceImpl();
-            // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                Date birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
-                flag = userService.addUser(Integer.valueOf(userCode), userName, Integer.valueOf(gender), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(birthday), phone, createdBy, date);
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-             if (flag){
-                 resp.sendRedirect(req.getContextPath()+"/jsp/user.do?method=query");
-             }else{
-                 req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
-             }
+    /**
+     * @return void
+     * @Description //TODO 用户管理实现   重点难点
+     * @Date 18:24 2023/3/5
+     * @Param [req, resp]
+     **/
+    public void addUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //从前端获取数据
+        String userCode = req.getParameter("userCode");
+        String userName = req.getParameter("userName");
+        String userPassword = req.getParameter("userPassword");
+        String ruserPassword = req.getParameter("ruserPassword");
+        String gender = req.getParameter("gender");
+        String birthday = req.getParameter("birthday");
+        String phone = req.getParameter("phone");
+        String address = req.getParameter("address");
+        String userRole = req.getParameter("userRole");
+        int createdBy = 0;
+        //获取当前时间
+        Date date = new Date();
+        boolean flag = false;
+        UserServiceImpl userService = new UserServiceImpl();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
+            flag = userService.addUser(Integer.valueOf(userCode), userName, Integer.valueOf(gender), simpleDateFormat.format(birthday), phone, createdBy, simpleDateFormat.format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        if (flag) {
+            resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
+        } else {
+            req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
+        }
+    }
+
+    /**
+     * @return void
+     * @Description 获取角色列表
+     * @Date 18:24 2023/3/5
+     * @Param [req, resp]
+     **/
+    public void getroleList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RoleServiceImpl roleService = new RoleServiceImpl();
+        List<Role> roleList = roleService.getRoleList();
+        //把roleList转换成json对象输出
+        resp.setContentType("application/json");
+        PrintWriter outPrintWriter = resp.getWriter();
+        outPrintWriter.write(JSONArray.toJSONString(roleList));
+        outPrintWriter.flush();
+        outPrintWriter.close();
+    }
+
+    /**
+     * @Description: 判断用户是否已经存在
+     * @Date: 18:26 2023/3/5
+     * @Param: [req, resp]
+     * @return: void
+     **/
+    public void isExitUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String userCode = req.getParameter("userCode");
+        UserServiceImpl userService = new UserServiceImpl();
+        HashMap<Object, Object> userMap = new HashMap<>();
+        if (StringUtils.isNullOrEmpty(userCode)) {
+            //userCode == null || userCode.equals("")
+            userMap.put("userCode", "exist");
+        } else {
+            User userByUserCode = userService.getUserByUserCode(userCode);
+            //三元表达式  userByUserCode不为空，说明存在，则userCode   put "exist"；反之，put "noexist"
+            userMap.put("userCode", (userByUserCode != null) ? "exist" : "noexist");
+
+            // 把resultMap转为json字符串以json的形式输出
+            // 配置上下文的输出类型
+            resp.setContentType("application/json");
+            // 从response对象中获取往外输出的writer对象
+            PrintWriter outPrintWriter = resp.getWriter();
+            // 把resultMap转为json字符串 输出
+            outPrintWriter.write(JSONArray.toJSONString(userMap));
+            outPrintWriter.flush();//刷新
+            outPrintWriter.close();//关闭流
+
+        }
+    }
 }

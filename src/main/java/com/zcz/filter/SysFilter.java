@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @description: 用户session过滤器
- * @fileName: SysFilter
- * @author: ZCZ
- * @date 2023年02月26日 20:11
+ * @Description: 用户session过滤器
+ * @FileName: SysFilter
+ * @aAthor: ZCZ
+ * @Date 2023年02月26日 20:11
  */
 public class SysFilter implements Filter {
     @Override
@@ -20,6 +20,12 @@ public class SysFilter implements Filter {
 
     }
 
+    /**
+     * @Description :  过滤用户Session
+     * @Date : 18:28 2023/3/5
+     * @Param : [req, resp, chain]
+     * @return : void
+     **/
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;

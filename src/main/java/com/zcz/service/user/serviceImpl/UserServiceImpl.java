@@ -8,18 +8,17 @@ import com.zcz.service.user.UserService;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 /**
- * @description: 用户业务层实现
- * @fileName: UserServiceImpl
- * @author: ZCZ
- * @date 2023年02月26日 17:50
+ * @Description: 用户业务层实现
+ * @FileName: UserServiceImpl
+ * @Author: ZCZ
+ * @Date 2023年02月26日 17:50
  */
 public class UserServiceImpl implements UserService {
+
     //业务层都会调用Dao层，所以我们要引入Dao层
     private UserDao userDao;
 
@@ -27,14 +26,19 @@ public class UserServiceImpl implements UserService {
         userDao = new UserDaoImpl();
     }
 
+    /**
+     * @Description: 根据用户编码据获取用户
+     * @Date: 2023/3/5
+     * @Param: [usercode]
+     * @return: com.zcz.entity.User
+     **/
     @Override
-    public User login(String usercode, String userPassword) {
+    public User getUserByUserCode(String usercode) {
         Connection connection = null;
         User user = null;
-        connection = BaseDao.getConnection();
-        //通过业务层，调用具体的 数据库操作
         try {
-            user = userDao.getLoginUser(connection, usercode,userPassword);
+            connection = BaseDao.getConnection();
+            user = userDao.getUserByUserCode(connection, usercode);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -43,7 +47,35 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    //根据用户ID修改用户密码
+    /**
+     * @Description: 用户登录校验 用户名、密码
+     * @Date: 2023/3/5
+     * @Param: [usercode, userPassword]
+     * @return: com.zcz.entity.User
+     **/
+    @Override
+    public User login(String usercode, String userPassword) {
+        Connection connection = null;
+        User user = null;
+        connection = BaseDao.getConnection();
+        //通过业务层，调用具体的 数据库操作
+        try {
+            user = userDao.getLoginUser(connection, usercode, userPassword);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return user;
+    }
+
+
+    /**
+     * @Description: 根据用户ID修改用户密码
+     * @Date: 2023/3/5
+     * @Param: [id, password]
+     * @return: boolean
+     **/
     @Override
     public boolean UpdatePwd(int id, String password) throws SQLException {
         Connection connection = null;
@@ -62,18 +94,29 @@ public class UserServiceImpl implements UserService {
         return flag;
     }
 
-    //根据用户名或者角色 获取用户列表数量
+    /**
+     * @Description: 根据用户名或者角色 获取用户列表数量
+     * @Date: 2023/3/5
+     * @Param: [userRole, userName]
+     * @return: int
+     **/
     @Override
-    public int getUserCount( int userRole, String userName) throws SQLException {
+    public int getUserCount(int userRole, String userName) throws SQLException {
         Connection connection = null;
         //业务层调用公共类BaseDao方法获取连接
         connection = BaseDao.getConnection();
         //调用dao查询
         int count = userDao.getUserCount(connection, userRole, userName);
-        BaseDao.closeResource(connection,null,null);
+        BaseDao.closeResource(connection, null, null);
         return count;
     }
 
+    /**
+     * @Description: 分页实现获取用户列表
+     * @Date: 2023/3/5
+     * @Param: [userRole, userName, pageSize, currentPageNo]
+     * @return: java.util.List<com.zcz.entity.User>
+     **/
     @Override
     public List<User> getUserList(int userRole, String userName, int pageSize, int currentPageNo) {
         Connection connection = null;
@@ -82,27 +125,32 @@ public class UserServiceImpl implements UserService {
         System.out.println("querUserRole ---->" + userRole);
         System.out.println("currentPageNo ---->" + currentPageNo);
         System.out.println("pageSize ---->" + pageSize);
-            try {
-                connection = BaseDao.getConnection();
-                userList = userDao.getUserList(connection, userRole, userName, pageSize, currentPageNo);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            return userList;
+        try {
+            connection = BaseDao.getConnection();
+            userList = userDao.getUserList(connection, userRole, userName, pageSize, currentPageNo);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return userList;
     }
 
-    //添加用户
+    /**
+     * @Description: 添加用户
+     * @Date: 2023/3/5
+     * @Param: [userCode, userName, gender, birthday, phone, createdBy, creationDate]
+     * @return: boolean
+     **/
     @Override
-    public boolean addUser(int userRole, String userName, int gender, Date birthday, String phone, int createdBy, Date creationDate) {
-        Connection connection =null;
+    public boolean addUser(int userCode, String userName, int gender, String birthday, String phone, int createdBy, String creationDate) {
+        Connection connection = null;
         boolean flag = false;
         //调用dao增加
         try {
             connection = BaseDao.getConnection();
             connection.setAutoCommit(false);//开启JDBC事务管理
-            int count = userDao.addUser(connection, userRole, userName,gender,birthday,phone,createdBy,creationDate);
-            if (count>0){
-                flag=true;
+            int count = userDao.addUser(connection, userCode, userName, gender, birthday, phone, createdBy, creationDate);
+            if (count > 0) {
+                flag = true;
             }
             connection.commit();
         } catch (SQLException throwables) {
@@ -113,12 +161,18 @@ public class UserServiceImpl implements UserService {
                 e.printStackTrace();
             }
             throwables.printStackTrace();
-        }finally {
-            BaseDao.closeResource(connection,null,null);
+        } finally {
+            BaseDao.closeResource(connection, null, null);
         }
-       return flag;
+        return flag;
     }
 
+    /**
+     * @Description: 测试获取用户数量
+     * @Date: 2023/3/5
+     * @Param: []
+     * @return: void
+     **/
     @Test
     public void test() throws SQLException {
         UserServiceImpl userService = new UserServiceImpl();

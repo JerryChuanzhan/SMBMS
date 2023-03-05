@@ -11,25 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @description: 角色信息Dao实现类
- * @fileName: RoleDaoImpl
- * @author: ZCZ
- * @date 2023年03月02日 22:49
+ * @Description: 角色信息Dao实现类
+ * @FileName: RoleDaoImpl
+ * @Author: ZCZ
+ * @Date 2023年03月02日 22:49
  */
-public class RoleDaoImpl implements RoleDao{
-    // 获取角色列表
+public class RoleDaoImpl implements RoleDao {
+    /**
+     * @Description: 获取角色列表
+     * @Date: 2023/3/5
+     * @Param: [connection]
+     * @return: java.util.List<com.zcz.entity.Role>
+     **/
     @Override
     public List<Role> getRoleList(Connection connection) throws SQLException {
-        PreparedStatement preparedStatement =null;
-        ResultSet resultSet =null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         ArrayList<Role> roleArrayList = new ArrayList<>();
-        if (connection!=null){
+        if (connection != null) {
             String sql = "select *  from smbms_role";
-            Object[] params ={};
+            Object[] params = {};
             resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Role role = new Role();
-                role.setId( resultSet.getInt("id"));
+                role.setId(resultSet.getInt("id"));
                 role.setRoleCode(resultSet.getString("roleCode"));
                 role.setRoleName(resultSet.getString("roleName"));
                 roleArrayList.add(role);

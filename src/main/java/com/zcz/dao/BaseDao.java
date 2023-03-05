@@ -6,10 +6,10 @@ import java.sql.*;
 import java.util.Properties;
 
 /**
- * @description: 操作数据库公共类
- * @fileName: BaseDao
- * @author: ZCZ
- * @date 2023年02月26日 12:52
+ * @Description: 操作数据库公共类
+ * @FileName: BaseDao
+ * @Author: ZCZ
+ * @Date 2023年02月26日 12:52
  */
 public class BaseDao {
     private static String driver;
@@ -17,7 +17,12 @@ public class BaseDao {
     private static String username;
     private static String password;
 
-    //静态代码块，类加载的时候就初始化
+    /**
+     * @Description: 静态代码块，类加载的时候就初始化
+     * @Date: 2023/3/5
+     * @Param:
+     * @return:
+     **/
     static {
         Properties properties = new Properties();
         //通过类加载器读取对应的资源
@@ -39,7 +44,12 @@ public class BaseDao {
         password = properties.getProperty("password");
     }
 
-    //获取数据库连接
+    /**
+     * @Description: 获取数据库连接
+     * @Date: 2023/3/5
+     * @Param: []
+     * @return: java.sql.Connection
+     **/
     public static Connection getConnection() {
         Connection connection = null;
         try {
@@ -51,7 +61,12 @@ public class BaseDao {
         return connection;
     }
 
-    //编写'查询'公共类
+    /**
+     * @Description: 编写'查询'公共类
+     * @Date: 2023/3/5
+     * @Param: [connection, preparedStatement, sql, params, resultSet]
+     * @return: java.sql.ResultSet
+     **/
     public static ResultSet execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params, ResultSet resultSet) throws SQLException {
         //预编译SQL,在后面的preparedStatement直接执行
         preparedStatement = connection.prepareStatement(sql);
@@ -65,8 +80,13 @@ public class BaseDao {
         return resultSet;
     }
 
-    //编写'增、删、改'工具类
-    public static int execute(Connection connection, PreparedStatement preparedStatement , String sql, Object[] params) throws SQLException {
+    /**
+     * @Description: 编写'增、删、改'工具类
+     * @Date: 2023/3/5
+     * @Param: [connection, preparedStatement, sql, params]
+     * @return: int
+     **/
+    public static int execute(Connection connection, PreparedStatement preparedStatement, String sql, Object[] params) throws SQLException {
         //预编译SQL,在后面的preparedStatement直接执行
         preparedStatement = connection.prepareStatement(sql);
         //赋值SQL参数
@@ -79,7 +99,12 @@ public class BaseDao {
         return updateRows;
     }
 
-    //释放资源
+    /**
+     * @Description: 释放资源
+     * @Date: 2023/3/5
+     * @Param: [connection, preparedStatement, resultSet]
+     * @return: boolean
+     **/
     public static boolean closeResource(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         boolean flag = true;
         //ResultSet 释放资源
