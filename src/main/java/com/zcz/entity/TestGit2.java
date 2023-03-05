@@ -11,5 +11,6 @@ public class TestGit2 {
         System.out.println("再次测试git仓库");
         System.out.println("添加1");
         System.out.println("分支的使用");
+        System.out.println("分支冲突解决");
     }
 }
