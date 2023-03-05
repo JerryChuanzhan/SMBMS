@@ -5,19 +5,17 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0"
          metadata-complete="true">
-
-        <!--  字符编码过滤器S  -->
-        <filter>
-            <filter-name>CharacterEncodingFilter</filter-name>
-            <filter-class>com.zcz.filter.CharacterEncodingFilter</filter-class>
-        </filter>
+    <!--  字符编码过滤器S  -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>com.zcz.filter.CharacterEncodingFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
         <!--所有请求都会过滤-->
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-        <!--设置欢迎页面-->
+    <!--设置欢迎页面-->
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
@@ -47,7 +45,6 @@
         <filter-name>SysFilter</filter-name>
         <url-pattern>/jsp/*</url-pattern>
     </filter-mapping>
-    
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>com.zcz.servlet.UserServlet</servlet-class>
