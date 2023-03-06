@@ -2,6 +2,7 @@ package com.zcz.service.user;
 
 import com.zcz.entity.User;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -68,4 +69,12 @@ public interface UserService {
      * @return:
      **/
     public boolean deluser(int userId);
+
+    /**
+     * @Description: 修改用户信息
+     * @Date: 2023/3/6
+     * @Param: [user]
+     * @return: int
+     **/
+    public boolean updateUser(User user);
 }

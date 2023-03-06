@@ -202,6 +202,41 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * @Description: 修改用户信息
+     * @Date: 2023/3/6
+     * @Param: [user]
+     * @return: boolean
+     **/
+    @Override
+    public boolean updateUser(User user) {
+        // 修改成功标志
+        boolean updateFlag = false;
+        Connection connection = null;
+        try {
+            // 调用数据库操作公共类，获取连接
+            connection = BaseDao.getConnection();
+            // 调用dao  修改用户信息
+            int updateRows = userDao.updateUser(connection, user);
+            // 开启事务
+            connection.setAutoCommit(false);
+            if (updateRows > 0) {
+                updateFlag = true;
+            }
+            // 提交事务
+            connection.commit();
+        } catch (SQLException throwables) {
+            try {
+                // 若数据修改异常，事务回滚
+                connection.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            throwables.printStackTrace();
+        }
+        return updateFlag;
+    }
+
+    /**
      * @Description: 测试获取用户数量
      * @Date: 2023/3/5
      * @Param: []
@@ -213,4 +248,6 @@ public class UserServiceImpl implements UserService {
         int userCount = userService.getUserCount(0, null);
         System.out.println(userCount);
     }
+
+
 }

@@ -252,4 +252,37 @@ public class UserDaoImpl implements UserDao {
         }
         return addRows;
     }
+
+    /**
+     * @Description: 修改用户信息
+     * @Date: 2023/3/6
+     * @Param: [connection, user]
+     * @return: int
+     **/
+    @Override
+    public int updateUser(Connection connection, User user) {
+        PreparedStatement preparedStatement = null;
+        int updateRows = 0;
+        String sql = "update smbms_user\n" +
+                "set userName =?,\n" +
+                "    gender=?,\n" +
+                "    birthday=?,\n" +
+                "    phone=?,\n" +
+                "    address=?,\n" +
+                "    userRole=?,\n" +
+                "    modifyBy=?,\n" +
+                "    modifyDate=?";
+        Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getModifyBy(), user.getModifyDate()};
+        if (connection != null) {
+            try {
+                updateRows = BaseDao.execute(connection, preparedStatement, sql, params);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                BaseDao.closeResource(connection, preparedStatement, null);
+            }
+        }
+
+        return updateRows;
+    }
 }

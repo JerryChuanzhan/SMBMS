@@ -54,6 +54,10 @@ public class UserServlet extends HttpServlet {
             this.isExitUser(req, resp);
         } else if (method != null && method.equals("deluser")) {
             this.deluser(req, resp);
+        } else if (method != null && method.equals("userid")) {
+            //this.getUserById(req, resp, "userview.jsp");
+        }else if (method != null && method.equals("modifyexe")) {
+            this.updateUser(req, resp);
         }
     }
 
@@ -65,7 +69,7 @@ public class UserServlet extends HttpServlet {
 
     /**
      * @return void
-     * @Description  封装servlet的修改密码方法
+     * @Description 封装servlet的修改密码方法
      * @Date 18:23 2023/3/5
      * @Param [req, resp]
      **/
@@ -103,7 +107,7 @@ public class UserServlet extends HttpServlet {
 
     /**
      * @return void
-     * @Description  验证旧密码，Session中有用户的密码   根据Js中ajax逻辑进行判断
+     * @Description 验证旧密码，Session中有用户的密码   根据Js中ajax逻辑进行判断
      * @Date 18:23 2023/3/5
      * @Param [req, resp]
      **/
@@ -237,7 +241,8 @@ public class UserServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
         String userRole = req.getParameter("userRole");
-        int createdBy = 0;
+        //从session中获取对象，转换为User，得到当前登录用户的主键ID
+        int createdBy = ((User) req.getSession().getAttribute(Constants.USER_SESSION)).getId();
         // 获取当前时间
         Date date = new Date();
         boolean flag = false;
@@ -307,6 +312,12 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    /**
+     * @Description: 删除用户
+     * @Date: 2023/3/6
+     * @Param: [req, resp]
+     * @return: void
+     **/
     public void deluser(HttpServletRequest req, HttpServletResponse resp) {
         boolean flag = false;
         int userRole = 0;
@@ -346,6 +357,57 @@ public class UserServlet extends HttpServlet {
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @Description: 修改用户信息
+     * @Date: 2023/3/6
+     * @Param: [req, resp]
+     * @return: void
+     **/
+    public void updateUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        // 修改成功标志
+        boolean updateFlag = false;
+        // 从前端获取修改用户参数
+        String uid = req.getParameter("uid");
+        String userName = req.getParameter("userName");
+        String gender = req.getParameter("gender");
+        String birthday = req.getParameter("birthday");
+        String phone = req.getParameter("phone");
+        String address = req.getParameter("address");
+        String userRole = req.getParameter("userRole");
+
+        // 组织修改数据
+        User user = new User();
+        user.setId(Integer.valueOf(uid));
+        user.setUserName(userName);
+        user.setGender(Integer.valueOf(gender));
+        // 转换出生日期参数
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            // 出生日期 ，修改日期  date 转 String
+            user.setBirthday(simpleDateFormat.parse(birthday));
+            user.setCreationDate(simpleDateFormat.parse(String.valueOf(new Date())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        user.setPhone(phone);
+        user.setAddress(address);
+        // 获取当前登录者的主键 Id ,设为 当前修改ID
+        int updateBy = ((User) req.getSession().getAttribute(Constants.USER_SESSION)).getId();
+        user.setModifyBy(updateBy);
+        user.setUserRole(Integer.valueOf(userRole));
+
+        // 调用Service层 实现用户修改
+        UserServiceImpl userService = new UserServiceImpl();
+        updateFlag = userService.updateUser(user);
+
+        // 若修改成功，重定向到用户列表页面  ，否则转发至用户修改页面
+        if (updateFlag) {
+            resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
+        } else {
+            req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
         }
     }
 }

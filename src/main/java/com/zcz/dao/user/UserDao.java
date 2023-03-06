@@ -62,7 +62,7 @@ public interface UserDao {
      **/
     public int addUser(Connection connection, int userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate) throws SQLException;
 
-    /*
+    /**
      * @Author: ZCZ
      * @Description: 根据用户ID删除用户
      * @Date: 2023/3/6
@@ -70,4 +70,12 @@ public interface UserDao {
      * @return: [java.sql.Connection, int]
      **/
     public int deluser(Connection connection, int userId);
+
+    /**
+     * @Description: 修改用户信息
+     * @Date: 2023/3/6
+     * @Param: [connection, user]
+     * @return: int
+     **/
+    public int updateUser(Connection connection, User user);
 }
