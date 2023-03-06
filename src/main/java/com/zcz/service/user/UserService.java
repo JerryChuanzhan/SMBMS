@@ -58,7 +58,14 @@ public interface UserService {
      * @Param: [userCode, userName, gender, birthday, phone, createdBy, creationDate]
      * @return: boolean
      **/
-    public boolean addUser(int userCode, String userName, int gender, String birthday, String phone, int createdBy, String creationDate);
+    public boolean addUser(int userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate);
 
-
+    /*
+     * @Author: ZCZ
+     * @Description:  根据用户ID删除用户
+     * @Date: 2023/3/6
+     * @Param:
+     * @return:
+     **/
+    public boolean deluser(int userId);
 }

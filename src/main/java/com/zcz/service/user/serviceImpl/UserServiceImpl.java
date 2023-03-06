@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class UserServiceImpl implements UserService {
 
-    //业务层都会调用Dao层，所以我们要引入Dao层
+    // 业务层都会调用Dao层，所以我们要引入Dao层
     private UserDao userDao;
 
     public UserServiceImpl() {
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         Connection connection = null;
         User user = null;
         connection = BaseDao.getConnection();
-        //通过业务层，调用具体的 数据库操作
+        // 通过业务层，调用具体的 数据库操作
         try {
             user = userDao.getLoginUser(connection, usercode, userPassword);
         } catch (SQLException throwables) {
@@ -81,15 +81,15 @@ public class UserServiceImpl implements UserService {
         Connection connection = null;
         int rows = 0;
         boolean flag = false;
-        //通过操作数据库通用类获取连接
+        // 通过操作数据库通用类获取连接
         connection = BaseDao.getConnection();
-        //修改密码
+        // 修改密码
         rows = userDao.updatePwd(connection, id, password);
-        //密码修改成功，返回true，否则返回false
+        // 密码修改成功，返回true，否则返回false
         if (rows > 0) {
             flag = true;
         }
-        //释放资源
+        // 释放资源
         BaseDao.closeResource(connection, null, null);
         return flag;
     }
@@ -103,9 +103,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int getUserCount(int userRole, String userName) throws SQLException {
         Connection connection = null;
-        //业务层调用公共类BaseDao方法获取连接
+        // 业务层调用公共类BaseDao方法获取连接
         connection = BaseDao.getConnection();
-        //调用dao查询
+        // 调用dao查询
         int count = userDao.getUserCount(connection, userRole, userName);
         BaseDao.closeResource(connection, null, null);
         return count;
@@ -134,6 +134,40 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+
+    /*
+     * @Author: ZCZ
+     * @Description:  根据用户Id删除用户
+     * @Date: 2023/3/6
+     * @Param: [userId]
+     * @return: [int]
+     **/
+    @Override
+    public boolean deluser(int userId) {
+        Connection connection = null;
+        boolean flag = false;
+        try {
+            connection = BaseDao.getConnection();
+            connection.setAutoCommit(false);// 开启JDBC事务管理
+            int delRows = userDao.deluser(connection, userId);
+            if (delRows > 0) {
+                flag = true;
+            }
+            // 事务提交
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                System.out.println("---删除失败，事务回滚，rollback----");
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            throw new RuntimeException(e);
+        }
+
+        return flag;
+    }
+
     /**
      * @Description: 添加用户
      * @Date: 2023/3/5
@@ -141,14 +175,14 @@ public class UserServiceImpl implements UserService {
      * @return: boolean
      **/
     @Override
-    public boolean addUser(int userCode, String userName, int gender, String birthday, String phone, int createdBy, String creationDate) {
+    public boolean addUser(int userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate) {
         Connection connection = null;
         boolean flag = false;
-        //调用dao增加
+        // 调用dao增加
         try {
             connection = BaseDao.getConnection();
-            connection.setAutoCommit(false);//开启JDBC事务管理
-            int count = userDao.addUser(connection, userCode, userName, gender, birthday, phone, createdBy, creationDate);
+            connection.setAutoCommit(false);// 开启JDBC事务管理
+            int count = userDao.addUser(connection, userCode, userName, password, gender, birthday, phone, address, userRole, createdBy, creationDate);
             if (count > 0) {
                 flag = true;
             }
