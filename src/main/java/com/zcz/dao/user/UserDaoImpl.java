@@ -241,7 +241,7 @@ public class UserDaoImpl implements UserDao {
      * @return: int
      **/
     @Override
-    public int addUser(Connection connection, int userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate) throws SQLException {
+    public int addUser(Connection connection, String userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate) throws SQLException {
         PreparedStatement preparedStatement = null;
         int addRows = 0;
         if (connection != null) {
@@ -271,18 +271,58 @@ public class UserDaoImpl implements UserDao {
                 "    address=?,\n" +
                 "    userRole=?,\n" +
                 "    modifyBy=?,\n" +
-                "    modifyDate=?";
-        Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getModifyBy(), user.getModifyDate()};
+                "    modifyDate=?\n" +
+                " where id = ?";
+        Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getModifyBy(), user.getModifyDate(),user.getId()};
         if (connection != null) {
             try {
                 updateRows = BaseDao.execute(connection, preparedStatement, sql, params);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             } finally {
-                BaseDao.closeResource(connection, preparedStatement, null);
+                BaseDao.closeResource(null, preparedStatement, null);
             }
         }
 
         return updateRows;
+    }
+
+    /*
+     * @Author: ZCZ
+     * @Description: 根据用户ID  获取用户信息
+     * @Date: 2023/3/8
+     * @Param: [connection, uid]
+     * @return: [java.sql.Connection, int]
+     **/
+    @Override
+    public User getUserById(Connection connection, int uid) {
+        User user = new User();
+        ResultSet resultSet =null;
+        PreparedStatement preparedStatement =null;
+        if (connection!=null){
+            String sql ="select  * from  smbms_user u,smbms_role r where u.id = ? and u.userRole = r.id";
+            Object[] params ={uid};
+            try {
+                resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+                if (resultSet.next()){
+                    // set user属性值
+                    user.setId(resultSet.getInt("id"));
+                    user.setUserCode(resultSet.getString("userCode"));
+                    user.setUserName(resultSet.getString("userName"));
+                    user.setBirthday(resultSet.getDate("birthday"));
+                    user.setPhone(resultSet.getString("phone"));
+                    user.setUserRole(resultSet.getInt("userRole"));
+                    user.setUserRoleName(resultSet.getString("roleName"));
+                    user.setAddress(resultSet.getString("address"));
+                    user.setGender(resultSet.getInt("gender"));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }finally {
+                // 关闭资源
+                BaseDao.closeResource(connection,preparedStatement,resultSet);
+            }
+        }
+        return user;
     }
 }

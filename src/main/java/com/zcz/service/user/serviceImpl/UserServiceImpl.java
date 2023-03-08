@@ -8,8 +8,9 @@ import com.zcz.service.user.UserService;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: 用户业务层实现
@@ -111,6 +112,22 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
+    /*
+     * @Author: ZCZ
+     * @Description: 根据用户ID  获取用户信息
+     * @Date: 2023/3/8
+     * @Param: [uid]
+     * @return: [int]
+     **/
+    @Override
+    public User getUserById(int uid) {
+        PreparedStatement preparedStatement =null;
+        Connection connection = BaseDao.getConnection();
+        User user = userDao.getUserById(connection, uid);
+        BaseDao.closeResource(connection,preparedStatement,null);
+        return user;
+    }
+
     /**
      * @Description: 分页实现获取用户列表
      * @Date: 2023/3/5
@@ -175,7 +192,7 @@ public class UserServiceImpl implements UserService {
      * @return: boolean
      **/
     @Override
-    public boolean addUser(int userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate) {
+    public boolean addUser(String userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate) {
         Connection connection = null;
         boolean flag = false;
         // 调用dao增加
@@ -215,14 +232,14 @@ public class UserServiceImpl implements UserService {
         try {
             // 调用数据库操作公共类，获取连接
             connection = BaseDao.getConnection();
+            // 开启事务     获取数据库连接后就开启事务
+            connection.setAutoCommit(false);
             // 调用dao  修改用户信息
             int updateRows = userDao.updateUser(connection, user);
-            // 开启事务
-            connection.setAutoCommit(false);
             if (updateRows > 0) {
                 updateFlag = true;
             }
-            // 提交事务
+            // 提交事务   提交事务前connection 不能关闭，daoImpl不能关闭connection连接;执行完SQL后提交事务
             connection.commit();
         } catch (SQLException throwables) {
             try {
@@ -230,6 +247,9 @@ public class UserServiceImpl implements UserService {
                 connection.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }finally {
+                // 释放资源
+                BaseDao.closeResource(connection,null,null);
             }
             throwables.printStackTrace();
         }
@@ -249,5 +269,38 @@ public class UserServiceImpl implements UserService {
         System.out.println(userCount);
     }
 
+    @Test
+    public void test2(){
 
+
+        List<Map<String,Object>> clist = new ArrayList();
+        HashMap<String,Object> hashMap = new HashMap<>();
+        ArrayList<Object> list1 = new ArrayList<>();
+        list1.add("1");
+        list1.add("2");
+        list1.add("3");
+        list1.add("4");
+
+        for (int j = 0; j < list1.size(); j++) {
+            Map hash2 = new HashMap<>();
+            hash2.put("list1",list1.get(j) );
+            clist.add(hash2);
+        }
+
+        ArrayList<Object> list2 = new ArrayList<>();
+        list2.add("A");
+        list2.add("B");
+        list2.add("C");
+        list2.add("D");
+        for (int i = 0; i < list2.size(); i++) {
+            // hashMap = new HashMap<>();
+            Map hash2 = new HashMap<>();
+            hash2.put("list2",list2.get(i) );
+            clist.add(hash2);
+        }
+        hashMap.put("list",clist);
+        // hashMap.put("list2",list2);
+        System.out.println(hashMap);
+
+    }
 }

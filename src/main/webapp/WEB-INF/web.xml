@@ -53,6 +53,15 @@
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/jsp/user.do</url-pattern>
     </servlet-mapping>
+    <!--添加供应商servlet-->
+    <servlet>
+        <servlet-name>ProviderServlet</servlet-name>
+        <servlet-class>com.zcz.servlet.ProviderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProviderServlet</servlet-name>
+        <url-pattern>/jsp/provider.do</url-pattern>
+    </servlet-mapping>
     <!--    默认session过期时间 : 真实的业务需要  -->
     <session-config>
         <session-timeout>30</session-timeout>

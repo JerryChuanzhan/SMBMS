@@ -54,10 +54,12 @@ public class UserServlet extends HttpServlet {
             this.isExitUser(req, resp);
         } else if (method != null && method.equals("deluser")) {
             this.deluser(req, resp);
-        } else if (method != null && method.equals("userid")) {
-            //this.getUserById(req, resp, "userview.jsp");
-        }else if (method != null && method.equals("modifyexe")) {
+        } else if (method != null && method.equals("modify")) {// userlist.js;调用方法获取用户信息，跳转usermodify 页面
+            this.getUserById(req, resp, "usermodify.jsp");
+        } else if (method != null && method.equals("modifyexe")) {
             this.updateUser(req, resp);
+        } else if (method != null && method.equals("view")) {// userlist.js;调用方法获取用户信息，跳转至userview 页面
+            this.getUserById(req, resp, "userview.jsp");
         }
     }
 
@@ -241,7 +243,7 @@ public class UserServlet extends HttpServlet {
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
         String userRole = req.getParameter("userRole");
-        //从session中获取对象，转换为User，得到当前登录用户的主键ID
+        // 从session中获取对象，转换为User，得到当前登录用户的主键ID
         int createdBy = ((User) req.getSession().getAttribute(Constants.USER_SESSION)).getId();
         // 获取当前时间
         Date date = new Date();
@@ -252,7 +254,7 @@ public class UserServlet extends HttpServlet {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
-            flag = userService.addUser(Integer.valueOf(userCode), userName, password, Integer.valueOf(gender), simpleDateFormat.format(birth), phone, address, Integer.parseInt(userRole), createdBy, simpleDateFormat.format(date));
+            flag = userService.addUser(userCode, userName, password, Integer.valueOf(gender), simpleDateFormat.format(birth), phone, address, Integer.parseInt(userRole), createdBy, simpleDateFormat.format(date));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -388,7 +390,8 @@ public class UserServlet extends HttpServlet {
         try {
             // 出生日期 ，修改日期  date 转 String
             user.setBirthday(simpleDateFormat.parse(birthday));
-            user.setCreationDate(simpleDateFormat.parse(String.valueOf(new Date())));
+            Date date = new Date();
+            user.setCreationDate(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -408,6 +411,23 @@ public class UserServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query");
         } else {
             req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
+        }
+    }
+
+    /*
+     * @Author: ZCZ
+     * @Description: 根据用户 ID 获取用户信息，跳转用户修改信息页面
+     * @Date: 2023/3/8
+     * @Param: [req, resp, url]
+     * @return: [javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String]
+     **/
+    public void getUserById(HttpServletRequest req, HttpServletResponse resp, String url) throws ServletException, IOException {
+        String uid = req.getParameter("uid");
+        if (!StringUtils.isNullOrEmpty(uid)) {
+            UserServiceImpl userService = new UserServiceImpl();
+            User user = userService.getUserById(Integer.parseInt(uid));
+            req.setAttribute("user", user);
+            req.getRequestDispatcher(url).forward(req, resp);
         }
     }
 }

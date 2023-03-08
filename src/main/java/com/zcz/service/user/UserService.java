@@ -53,13 +53,22 @@ public interface UserService {
      **/
     public List<User> getUserList(int userRole, String userName, int pageSize, int currentPageNo);
 
+    /*
+     * @Author: ZCZ
+     * @Description: 根据用户Id 获取用户信息
+     * @Date: 2023/3/8
+     * @Param: [uid]
+     * @return: [int]
+     **/
+    public User getUserById(int uid);
+
     /**
      * @Description: 添加用户
      * @Date: 2023/3/5
      * @Param: [userCode, userName, gender, birthday, phone, createdBy, creationDate]
      * @return: boolean
      **/
-    public boolean addUser(int userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate);
+    public boolean addUser(String userCode, String userName, String password, int gender, String birthday, String phone, String address, int userRole, int createdBy, String creationDate);
 
     /*
      * @Author: ZCZ

@@ -18,7 +18,7 @@ $(function () {
     phone.next().html("*");
     userRole.next().html("*");
 
-
+    // 用户信息修改页面  --->获取角色下拉框 数据
     $.ajax({
         type: "GET",//请求类型
         url: path + "/jsp/user.do",//请求的url
@@ -48,6 +48,7 @@ $(function () {
     });
 
 
+    // 用户修改 姓名校验
     userName.on("focus", function () {
         validateTip(userName.next(), {"color": "#666666"}, "* 用户名长度必须是大于1小于10的字符", false);
     }).on("blur", function () {
@@ -60,6 +61,7 @@ $(function () {
 
     });
 
+    // 用户修改 生日校验
     birthday.on("focus", function () {
         validateTip(birthday.next(), {"color": "#666666"}, "* 点击输入框，选择日期", false);
     }).on("blur", function () {
@@ -70,9 +72,11 @@ $(function () {
         }
     });
 
+    // 用户修改 电话校验
     phone.on("focus", function () {
         validateTip(phone.next(), {"color": "#666666"}, "* 请输入手机号", false);
     }).on("blur", function () {
+        // 电话号码  13 开头
         var patrn = /^(13[0-9]|15[0-9]|18[0-9])\d{8}$/;
         if (phone.val().match(patrn)) {
             validateTip(phone.next(), {"color": "green"}, imgYes, true);
@@ -81,6 +85,7 @@ $(function () {
         }
     });
 
+    // 用户修改 角色选择
     userRole.on("focus", function () {
         validateTip(userRole.next(), {"color": "#666666"}, "* 请选择用户角色", false);
     }).on("blur", function () {
@@ -92,6 +97,7 @@ $(function () {
 
     });
 
+    // 提交 提醒
     saveBtn.on("click", function () {
         userName.blur();
         phone.blur();

@@ -1,6 +1,6 @@
 ﻿var userObj;
 
-//用户管理页面上点击删除按钮弹出删除框(userlist.jsp)
+// 用户管理页面上点击删除按钮弹出删除框(userlist.jsp)
 function deleteUser(obj) {
     $.ajax({
         type: "GET",
@@ -54,9 +54,10 @@ $(function () {
         window.location.href = path + "/jsp/user.do?method=view&uid=" + obj.attr("userid");
     });
 
+    // 点击 ‘修改’ 后，通过userlist.js；调用方法实现信息获取和页面跳转
     $(".modifyUser").on("click", function () {
         var obj = $(this);
-        window.location.href = path + "/jsp/user.do?method=modifyexe&uid=" + obj.attr("userid");
+        window.location.href = path + "/jsp/user.do?method=modify&uid=" + obj.attr("userid");
     });
 
     $('#no').click(function () {
