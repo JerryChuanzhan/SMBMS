@@ -62,6 +62,15 @@
         <servlet-name>ProviderServlet</servlet-name>
         <url-pattern>/jsp/provider.do</url-pattern>
     </servlet-mapping>
+    <!--添加订单Servlet-->
+    <servlet>
+        <servlet-name>BillServlet</servlet-name>
+        <servlet-class>com.zcz.servlet.BillServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BillServlet</servlet-name>
+        <url-pattern>/jsp/bill.do</url-pattern>
+    </servlet-mapping>
     <!--    默认session过期时间 : 真实的业务需要  -->
     <session-config>
         <session-timeout>30</session-timeout>

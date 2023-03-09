@@ -112,7 +112,7 @@ public class ProviderServlet extends HttpServlet {
         ProviderServiceImpl providerService = new ProviderServiceImpl();
         boolean flag = providerService.addProvider(provider);
 
-        // 添加成功 重定向至 供应商列表页面;添加失败，继续转发至供应商修改页面
+        // 添加成功 重定向至 供应商列表页面;添加失败，继续转发至供应商添加页面
         if (flag) {
             resp.sendRedirect(req.getContextPath() + "/jsp/provider.do?method=query");
         } else {

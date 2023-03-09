@@ -62,25 +62,31 @@ public class Bill {
     /**
      * 供应商名称
      */
+    private Integer providerId;
+
+    /**
+     * 供应商名称
+     */
     private String providerName;
 
-    @Override
-    public String toString() {
-        return "Bill{" +
-                "id=" + id +
-                ", billCode='" + billCode + '\'' +
-                ", productName='" + productName + '\'' +
-                ", produtcDesc='" + produtcDesc + '\'' +
-                ", productUnit='" + productUnit + '\'' +
-                ", productCount=" + productCount +
-                ", totalPrice=" + totalPrice +
-                ", isPayment=" + isPayment +
-                ", createdBy=" + createdBy +
-                ", creationDate=" + creationDate +
-                ", modifyBy=" + modifyBy +
-                ", modifyDate=" + modifyDate +
-                ", providerName='" + providerName + '\'' +
-                '}';
+    public Bill() {
+    }
+
+    public Bill(Integer id, String billCode, String productName, String produtcDesc, String productUnit, BigDecimal productCount, BigDecimal totalPrice, Integer isPayment, Integer createdBy, Date creationDate, Integer modifyBy, Date modifyDate, Integer providerId, String providerName) {
+        this.id = id;
+        this.billCode = billCode;
+        this.productName = productName;
+        this.produtcDesc = produtcDesc;
+        this.productUnit = productUnit;
+        this.productCount = productCount;
+        this.totalPrice = totalPrice;
+        this.isPayment = isPayment;
+        this.createdBy = createdBy;
+        this.creationDate = creationDate;
+        this.modifyBy = modifyBy;
+        this.modifyDate = modifyDate;
+        this.providerId = providerId;
+        this.providerName = providerName;
     }
 
     public Integer getId() {
@@ -179,6 +185,14 @@ public class Bill {
         this.modifyDate = modifyDate;
     }
 
+    public Integer getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(Integer providerId) {
+        this.providerId = providerId;
+    }
+
     public String getProviderName() {
         return providerName;
     }
@@ -187,22 +201,23 @@ public class Bill {
         this.providerName = providerName;
     }
 
-    public Bill(Integer id, String billCode, String productName, String produtcDesc, String productUnit, BigDecimal productCount, BigDecimal totalPrice, Integer isPayment, Integer createdBy, Date creationDate, Integer modifyBy, Date modifyDate, String providerName) {
-        this.id = id;
-        this.billCode = billCode;
-        this.productName = productName;
-        this.produtcDesc = produtcDesc;
-        this.productUnit = productUnit;
-        this.productCount = productCount;
-        this.totalPrice = totalPrice;
-        this.isPayment = isPayment;
-        this.createdBy = createdBy;
-        this.creationDate = creationDate;
-        this.modifyBy = modifyBy;
-        this.modifyDate = modifyDate;
-        this.providerName = providerName;
-    }
-
-    public Bill() {
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", billCode='" + billCode + '\'' +
+                ", productName='" + productName + '\'' +
+                ", produtcDesc='" + produtcDesc + '\'' +
+                ", productUnit='" + productUnit + '\'' +
+                ", productCount=" + productCount +
+                ", totalPrice=" + totalPrice +
+                ", isPayment=" + isPayment +
+                ", createdBy=" + createdBy +
+                ", creationDate=" + creationDate +
+                ", modifyBy=" + modifyBy +
+                ", modifyDate=" + modifyDate +
+                ", providerId=" + providerId +
+                ", providerName='" + providerName + '\'' +
+                '}';
     }
 }
