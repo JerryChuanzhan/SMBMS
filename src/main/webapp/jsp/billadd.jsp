@@ -23,6 +23,11 @@
                 <font color="red"></font>
             </div>
             <div>
+                <label for="productName">商品描述：</label>
+                <input type="text" name="productDesc" id="productDesc" value="">
+                <font color="red"></font>
+            </div>
+            <div>
                 <label for="productUnit">商品单位：</label>
                 <input type="text" name="productUnit" id="productUnit" value="">
                 <font color="red"></font>

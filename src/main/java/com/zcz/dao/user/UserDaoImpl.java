@@ -106,6 +106,7 @@ public class UserDaoImpl implements UserDao {
             String sql = "update smbms_user set userPassword = ? where id = ?";
             Object[] params = {password, id};
             executeRows = BaseDao.execute(connection, preparedStatement, sql, params);
+            // 释放资源
             BaseDao.closeResource(null, preparedStatement, null);
         }
         return executeRows;
@@ -204,14 +205,15 @@ public class UserDaoImpl implements UserDao {
                 user.setGender(resultSet.getInt("gender"));
                 userList.add(user);
             }
+            // 释放资源
             BaseDao.closeResource(null, preparedStatement, resultSet);
         }
         return userList;
     }
 
-    /*
+    /**
      * @Author: ZCZ
-     * @Description:  根据用户ID删除用户
+     * @Description: 根据用户ID删除用户
      * @Date: 2023/3/6
      * @Param: [connection, userId]
      * @return: [java.sql.Connection, int]
@@ -248,6 +250,7 @@ public class UserDaoImpl implements UserDao {
             String sql = "insert into smbms_user (userCode,userName,userPassword,gender,birthday,phone,address,userRole,createdBy,creationDate) values (?,?,?,? ,? ,? ,? ,? ,?,? )";
             Object[] params = {userCode, userName, password, gender, birthday, phone, address, userRole, createdBy, creationDate};
             addRows = BaseDao.execute(connection, preparedStatement, sql, params);
+            // 释放资源
             BaseDao.closeResource(null, null, null);
         }
         return addRows;
@@ -273,13 +276,14 @@ public class UserDaoImpl implements UserDao {
                 "    modifyBy=?,\n" +
                 "    modifyDate=?\n" +
                 " where id = ?";
-        Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getModifyBy(), user.getModifyDate(),user.getId()};
+        Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole(), user.getModifyBy(), user.getModifyDate(), user.getId()};
         if (connection != null) {
             try {
                 updateRows = BaseDao.execute(connection, preparedStatement, sql, params);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             } finally {
+                // 释放资源
                 BaseDao.closeResource(null, preparedStatement, null);
             }
         }
@@ -287,7 +291,7 @@ public class UserDaoImpl implements UserDao {
         return updateRows;
     }
 
-    /*
+    /**
      * @Author: ZCZ
      * @Description: 根据用户ID  获取用户信息
      * @Date: 2023/3/8
@@ -297,14 +301,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserById(Connection connection, int uid) {
         User user = new User();
-        ResultSet resultSet =null;
-        PreparedStatement preparedStatement =null;
-        if (connection!=null){
-            String sql ="select  * from  smbms_user u,smbms_role r where u.id = ? and u.userRole = r.id";
-            Object[] params ={uid};
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        if (connection != null) {
+            String sql = "select  * from  smbms_user u,smbms_role r where u.id = ? and u.userRole = r.id";
+            Object[] params = {uid};
             try {
                 resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
-                if (resultSet.next()){
+                if (resultSet.next()) {
                     // set user属性值
                     user.setId(resultSet.getInt("id"));
                     user.setUserCode(resultSet.getString("userCode"));
@@ -318,9 +322,9 @@ public class UserDaoImpl implements UserDao {
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            }finally {
+            } finally {
                 // 关闭资源
-                BaseDao.closeResource(connection,preparedStatement,resultSet);
+                BaseDao.closeResource(connection, preparedStatement, resultSet);
             }
         }
         return user;

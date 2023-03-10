@@ -24,9 +24,9 @@ public class LoginOutServlet extends HttpServlet {
      **/
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //移出用户Session属性（Constants.USER_SESSION）来实现注销
+        // 移出用户Session属性（Constants.USER_SESSION）来实现注销
         req.getSession().removeAttribute(Constants.USER_SESSION);
-        resp.sendRedirect(req.getContextPath() + "/login.jsp");//返回登录页面
+        resp.sendRedirect(req.getContextPath() + "/login.jsp");// 返回登录页面
     }
 
     @Override

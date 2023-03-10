@@ -9,6 +9,7 @@
     <div class="providerView">
         <p><strong>订单编号：</strong><span>${bill.billCode }</span></p>
         <p><strong>商品名称：</strong><span>${bill.productName }</span></p>
+        <p><strong>商品描述：</strong><span>${bill.productDesc }</span></p>
         <p><strong>商品单位：</strong><span>${bill.productUnit }</span></p>
         <p><strong>商品数量：</strong><span>${bill.productCount }</span></p>
         <p><strong>总金额：</strong><span>${bill.totalPrice }</span></p>

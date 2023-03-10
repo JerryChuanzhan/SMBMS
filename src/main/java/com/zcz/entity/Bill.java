@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @description: 订单信息
- * @fileName: Bill
- * @author: ZCZ
- * @date 2023年02月26日 11:37
+ * @Description: 订单信息
+ * @FileName: Bill
+ * @Author: ZCZ
+ * @Date 2023年02月26日 11:37
  */
 public class Bill {
     /**
@@ -25,7 +25,7 @@ public class Bill {
     /**
      * 商品描述
      */
-    private String produtcDesc;
+    private String productDesc;
     /**
      * 商品单位
      */
@@ -72,11 +72,11 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(Integer id, String billCode, String productName, String produtcDesc, String productUnit, BigDecimal productCount, BigDecimal totalPrice, Integer isPayment, Integer createdBy, Date creationDate, Integer modifyBy, Date modifyDate, Integer providerId, String providerName) {
+    public Bill(Integer id, String billCode, String productName, String productDesc, String productUnit, BigDecimal productCount, BigDecimal totalPrice, Integer isPayment, Integer createdBy, Date creationDate, Integer modifyBy, Date modifyDate, Integer providerId, String providerName) {
         this.id = id;
         this.billCode = billCode;
         this.productName = productName;
-        this.produtcDesc = produtcDesc;
+        this.productDesc = productDesc;
         this.productUnit = productUnit;
         this.productCount = productCount;
         this.totalPrice = totalPrice;
@@ -113,12 +113,12 @@ public class Bill {
         this.productName = productName;
     }
 
-    public String getProdutcDesc() {
-        return produtcDesc;
+    public String getProductDesc() {
+        return productDesc;
     }
 
-    public void setProdutcDesc(String produtcDesc) {
-        this.produtcDesc = produtcDesc;
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
     }
 
     public String getProductUnit() {
@@ -207,7 +207,7 @@ public class Bill {
                 "id=" + id +
                 ", billCode='" + billCode + '\'' +
                 ", productName='" + productName + '\'' +
-                ", produtcDesc='" + produtcDesc + '\'' +
+                ", productDesc='" + productDesc + '\'' +
                 ", productUnit='" + productUnit + '\'' +
                 ", productCount=" + productCount +
                 ", totalPrice=" + totalPrice +

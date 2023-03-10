@@ -82,7 +82,7 @@ public class BillDaoImpl implements BillDao {
                     billResult.setId(resultSet.getInt("id"));
                     billResult.setBillCode(resultSet.getString("billCode"));
                     billResult.setProductName(resultSet.getString("productName"));
-                    billResult.setProdutcDesc(resultSet.getString("productDesc"));
+                    billResult.setProductDesc(resultSet.getString("productDesc"));
                     billResult.setProductUnit(resultSet.getString("productUnit"));
                     billResult.setProductCount(resultSet.getBigDecimal("productCount"));
                     billResult.setTotalPrice(resultSet.getBigDecimal("totalPrice"));
@@ -115,8 +115,8 @@ public class BillDaoImpl implements BillDao {
     public int addBill(Connection connection, Bill bill) {
         PreparedStatement preparedStatement = null;
         int addRows = 0;
-        String sql = "insert into  smbms_bill set billCode = ? ,productName = ?, productDesc =?,productUnit =? ,productCount =?, totalPrice =?,isPayment = ?,createdBy =?,creationDate =?,modifyBy =?,modifyDate=?,providerId = ?";
-        Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProdutcDesc(), bill.getProductUnit(), bill.getProductCount(), bill.getTotalPrice(), bill.getIsPayment(), bill.getCreatedBy(), bill.getCreationDate(), bill.getModifyBy(), bill.getModifyDate(), bill.getProviderId()};
+        String sql = "insert into  smbms_bill (billCode ,productName , productDesc ,productUnit  ,productCount , totalPrice ,isPayment,createdBy ,creationDate , providerId ) values (?,?,?,?,?,?,?,?,?,?)";
+        Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProductDesc(), bill.getProductUnit(), bill.getProductCount(), bill.getTotalPrice(), bill.getIsPayment(), bill.getCreatedBy(), bill.getCreationDate() , bill.getProviderId()};
         try {
             addRows = BaseDao.execute(connection, preparedStatement, sql, params);
         } catch (SQLException e) {
@@ -150,6 +150,13 @@ public class BillDaoImpl implements BillDao {
         return delBill;
     }
 
+    /**
+     * @Author: ZCZ
+     * @Description: 根据订单主键获取订单信息
+     * @Date: 2023/3/10
+     * @Param: [connection, id]
+     * @return: [java.sql.Connection, java.lang.String]
+     **/
     @Override
     public Bill getBillById(Connection connection, String id) {
         PreparedStatement preparedStatement = null;
@@ -164,7 +171,7 @@ public class BillDaoImpl implements BillDao {
                 billResult.setId(resultSet.getInt("id"));
                 billResult.setBillCode(resultSet.getString("billCode"));
                 billResult.setProductName(resultSet.getString("productName"));
-                billResult.setProdutcDesc(resultSet.getString("productDesc"));
+                billResult.setProductDesc(resultSet.getString("productDesc"));
                 billResult.setProductUnit(resultSet.getString("productUnit"));
                 billResult.setProductCount(resultSet.getBigDecimal("productCount"));
                 billResult.setTotalPrice(resultSet.getBigDecimal("totalPrice"));
@@ -197,12 +204,13 @@ public class BillDaoImpl implements BillDao {
         PreparedStatement preparedStatement = null;
         int updateRow = 0;
         String sql = "update smbms_bill  set billCode = ? ,productName = ?, productDesc =?,productUnit =? ,productCount =?, totalPrice =?,isPayment = ?,modifyBy =?,modifyDate=?,providerId = ?  where id =?";
-        Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProdutcDesc(), bill.getProductUnit(), bill.getProductCount(), bill.getTotalPrice(), bill.getIsPayment(), bill.getModifyBy(), bill.getModifyDate(), bill.getProviderId(), bill.getId()};
+        Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProductDesc(), bill.getProductUnit(), bill.getProductCount(), bill.getTotalPrice(), bill.getIsPayment(), bill.getModifyBy(), bill.getModifyDate(), bill.getProviderId(), bill.getId()};
         try {
             updateRow = BaseDao.execute(connection, preparedStatement, sql, params);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
+            // 释放资源
             BaseDao.closeResource(null, preparedStatement, null);
         }
         return updateRow;

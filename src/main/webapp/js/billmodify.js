@@ -69,7 +69,6 @@ $(function () {
      * 失焦\获焦
      * jquery的方法传递
      */
-
     productName.on("focus", function () {
         validateTip(productName.next(), {"color": "#666666"}, "* 请输入商品名称", false);
     }).on("blur", function () {

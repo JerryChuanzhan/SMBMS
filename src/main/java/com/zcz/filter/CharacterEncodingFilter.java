@@ -15,18 +15,18 @@ public class CharacterEncodingFilter implements Filter {
     }
 
     /**
+     * @return : void
      * @Description :  过滤处理请求编码
      * @Date : 18:39 2023/3/5
      * @Param : [request, response, chain]
-     * @return : void
      **/
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //设置请求、相应编码
+        // 设置请求、相应编码
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
-        //链 放行
-        chain.doFilter(request,response);
+        // 链 放行
+        chain.doFilter(request, response);
     }
 
     @Override

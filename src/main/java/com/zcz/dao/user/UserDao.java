@@ -79,12 +79,12 @@ public interface UserDao {
      **/
     public int updateUser(Connection connection, User user);
 
-    /*
+    /**
      * @Author: ZCZ
      * @Description: 根据用户ID 获取用户信息
      * @Date: 2023/3/8
      * @Param: [connection, uid]
      * @return: [java.sql.Connection, int]
      **/
-    public User getUserById(Connection connection,int uid);
+    public User getUserById(Connection connection, int uid);
 }

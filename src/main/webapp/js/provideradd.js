@@ -12,7 +12,7 @@ $(function () {
     proPhone = $("#proPhone");
     addBtn = $("#add");
     backBtn = $("#back");
-    //初始化的时候，要把所有的提示信息变为：* 以提示必填项，更灵活，不要写在页面上
+    // 初始化的时候，要把所有的提示信息变为：* 以提示必填项，更灵活，不要写在页面上
     proCode.next().html("*");
     proName.next().html("*");
     proContact.next().html("*");

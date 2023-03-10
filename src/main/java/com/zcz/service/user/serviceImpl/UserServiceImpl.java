@@ -10,7 +10,10 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 用户业务层实现
@@ -121,10 +124,10 @@ public class UserServiceImpl implements UserService {
      **/
     @Override
     public User getUserById(int uid) {
-        PreparedStatement preparedStatement =null;
+        PreparedStatement preparedStatement = null;
         Connection connection = BaseDao.getConnection();
         User user = userDao.getUserById(connection, uid);
-        BaseDao.closeResource(connection,preparedStatement,null);
+        BaseDao.closeResource(connection, preparedStatement, null);
         return user;
     }
 
@@ -247,9 +250,9 @@ public class UserServiceImpl implements UserService {
                 connection.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 // 释放资源
-                BaseDao.closeResource(connection,null,null);
+                BaseDao.closeResource(connection, null, null);
             }
             throwables.printStackTrace();
         }
@@ -270,11 +273,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
 
 
-        List<Map<String,Object>> clist = new ArrayList();
-        HashMap<String,Object> hashMap = new HashMap<>();
+        List<Map<String, Object>> clist = new ArrayList();
+        HashMap<String, Object> hashMap = new HashMap<>();
         ArrayList<Object> list1 = new ArrayList<>();
         list1.add("1");
         list1.add("2");
@@ -283,7 +286,7 @@ public class UserServiceImpl implements UserService {
 
         for (int j = 0; j < list1.size(); j++) {
             Map hash2 = new HashMap<>();
-            hash2.put("list1",list1.get(j) );
+            hash2.put("list1", list1.get(j));
             clist.add(hash2);
         }
 
@@ -295,10 +298,10 @@ public class UserServiceImpl implements UserService {
         for (int i = 0; i < list2.size(); i++) {
             // hashMap = new HashMap<>();
             Map hash2 = new HashMap<>();
-            hash2.put("list2",list2.get(i) );
+            hash2.put("list2", list2.get(i));
             clist.add(hash2);
         }
-        hashMap.put("list",clist);
+        hashMap.put("list", clist);
         // hashMap.put("list2",list2);
         System.out.println(hashMap);
 

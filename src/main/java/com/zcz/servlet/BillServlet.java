@@ -125,6 +125,7 @@ public class BillServlet extends HttpServlet {
     public void addBill(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String billCode = req.getParameter("billCode");
         String productName = req.getParameter("productName");
+        String productDesc = req.getParameter("productDesc");
         String productUnit = req.getParameter("productUnit");
         String productCount = req.getParameter("productCount");
         String totalPrice = req.getParameter("totalPrice");
@@ -134,6 +135,7 @@ public class BillServlet extends HttpServlet {
         Bill bill = new Bill();
         bill.setBillCode(billCode);
         bill.setProductName(productName);
+        bill.setProductDesc(productDesc);
         bill.setProductUnit(productUnit);
         bill.setProductCount(BigDecimal.valueOf(Long.parseLong(productCount)));
         bill.setTotalPrice(BigDecimal.valueOf(Long.parseLong(totalPrice)));
@@ -204,6 +206,7 @@ public class BillServlet extends HttpServlet {
         String id = req.getParameter("id");
         String billCode = req.getParameter("billCode");
         String productName = req.getParameter("productName");
+        String productDesc = req.getParameter("productDesc");
         String productUnit = req.getParameter("productUnit");
         String productCount = req.getParameter("productCount");
         String totalPrice = req.getParameter("totalPrice");
@@ -214,6 +217,7 @@ public class BillServlet extends HttpServlet {
         bill.setId(Integer.valueOf(id));
         bill.setBillCode(billCode);
         bill.setProductName(productName);
+        bill.setProductDesc(productDesc);
         bill.setProductUnit(productUnit);
         // bill.setProductCount(BigDecimal.valueOf(Long.parseLong(productCount)));
         bill.setProductCount(new BigDecimal(productCount));

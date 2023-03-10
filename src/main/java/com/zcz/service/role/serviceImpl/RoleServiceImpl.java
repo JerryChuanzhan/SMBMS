@@ -53,7 +53,6 @@ public class RoleServiceImpl implements RoleService {
         System.out.println(roleList);
         for (Role role : roleList) {
             System.out.println(role.getRoleName());
-
         }
     }
 }

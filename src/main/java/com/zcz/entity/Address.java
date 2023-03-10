@@ -3,11 +3,10 @@ package com.zcz.entity;
 import java.util.Date;
 
 /**
- * @description: 地址信息
- * @fileName: Address
- * @author: ZCZ
- * @date 2023年02月26日 11:37
- * @remark: 众阳健康
+ * @Description: 地址信息
+ * @FileName: Address
+ * @Author: ZCZ
+ * @Date 2023年02月26日 11:37
  */
 public class Address {
     /**
