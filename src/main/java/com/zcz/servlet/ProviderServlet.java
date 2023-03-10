@@ -120,11 +120,18 @@ public class ProviderServlet extends HttpServlet {
         }
     }
 
+    /**
+     * @Description: 删除供应商信息
+     * @Date: 2023/3/10 
+     * @Param: [req, resp]
+     * @return: void
+     **/
     public void delprovider(HttpServletRequest req, HttpServletResponse resp) {
         String proid = req.getParameter("proid");
         HashMap<Object, Object> delFlagHashMap = new HashMap<>();
         boolean delFlag = false;
 
+        // 判断该供应商下是否含有订单，有订单不能删除
         BillServiceImpl billService = new BillServiceImpl();
         ProviderServiceImpl providerService = new ProviderServiceImpl();
         int billConut = billService.getConut(proid);
