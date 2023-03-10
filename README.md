@@ -2,7 +2,7 @@
 
 **👻（Supermarket  bill management system）**
 
-🐇基于 Java Servlet 的初级超市订货管理系统   
+🐇基于 Java Servlet 的初级超市账单管理系统   
 
 🐾个人学习Java的过程，逐步从Servlet 到 WebMVC ，到 Spring boot  ，然后SpringCloud ，记录自己学习足迹👣
 
