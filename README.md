@@ -1,6 +1,6 @@
-# SMBMS  🏬超市订货管理系统
+# SMBMS  🏬超市账单管理系统
 
-**👻（Supermarket  indent management system）**
+**👻（Supermarket  bill management system）**
 
 🐇基于 Java Servlet 的初级超市订货管理系统   
 
